@@ -24,11 +24,12 @@ build:
   only:
     - master
 test:
-  image: docker:18-git
+  image: docker:latest
   stage: test
   services:
-    - docker:18-dind
+    - docker:dind
   script:
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
     - docker run -d --name hello $CI_REGISTRY_IMAGE:tmp
     - sleep 10s
     - TEST=$(docker run --link hello lucj/curl -s http://hello:8000)
