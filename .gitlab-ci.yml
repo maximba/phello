@@ -60,7 +60,7 @@ deploy:
     - kubectl config set-context default --cluster=karis --user=gitlab 
     - kubectl config use-context default
     - cat k8s/10-deploy.tpl | sed "s|__IMAGE_NAME__|$CI_REGISTRY_IMAGE:$CI_BUILD_REF|" > k8s/10-deploy.yml
-    - cat k8s/30-ingress.tpl | sed "s|__HOST_NAME__|${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.${KUBE_DOMAIN}|g" k8s/30-ingress.yml
+    - cat k8s/30-ingress.tpl | sed "s|__HOST_NAME__|${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.${KUBE_DOMAIN}|g" > k8s/30-ingress.yml
     - kubectl apply -f k8s
   only:
     - master
