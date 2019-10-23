@@ -54,9 +54,10 @@ deploy:
   image: lucj/kubectl:1.15.2
   environment: test
   script:
-    - kubectl config set-cluster karis --server=${K8S_SERVER} --certificate-authority="${CA_DATA}"
+    - kubectl config set-cluster karis --server="${K8S_SERVER}" 
+    - kubectl config set clusters.karis.certificate-authority-data "${CA_DATA}"
     - kubectl config set-credentials gitlab --token=${SERVICE_TOKEN}
-    - kubectl config set-context default --cluster=karis --user=gitlab --namespace default
+    - kubectl config set-context default --cluster=karis --user=gitlab 
     - kubectl config use-context default
     - cat k8s/deploy.tpl | sed 's/GIT_COMMIT/'"$CI_BUILD_REF/" > k8s/deploy.yml
     - kubectl apply -f k8s
