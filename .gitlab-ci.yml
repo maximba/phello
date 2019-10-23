@@ -1,4 +1,9 @@
+#Default Image
+image: docker:latest
+
 variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://localhost:2375
   DOCKER_TLS_CERTDIR: ''
 
 stages:
@@ -19,10 +24,10 @@ build:
   only:
     - master
 test:
-  image: docker:latest
+  image: docker:18-git
   stage: test
   services:
-    - docker:dind
+    - docker:18-dind
   script:
     - docker run -d --name hello $CI_REGISTRY_IMAGE:tmp
     - sleep 10s
@@ -32,10 +37,10 @@ test:
     - master
 
 push:
-  image: docker:latest
+  image: docker:18-git
   stage: push
   services:
-    - docker:dind
+    - docker:18-dind
   script:
    - docker image pull $CI_REGISTRY_IMAGE:tmp
    - docker image tag $CI_REGISTRY_IMAGE:tmp $CI_REGISTRY_IMAGE:$CI_BUILD_REF
