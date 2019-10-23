@@ -54,13 +54,19 @@ deploy:
   image: lucj/kubectl:1.15.2
   environment: test
   script:
-    - kubectl config set-cluster karis --server="${K8S_SERVER}" 
-    - kubectl config set clusters.karis.certificate-authority-data "${CA_DATA}"
-    - kubectl config set-credentials gitlab --token=${SERVICE_TOKEN}
-    - kubectl config set-context default --cluster=karis --user=gitlab 
+    - kubectl config set-cluster k8s --server="${K8S_SERVER}"
+    - kubectl config set clusters.k8s.certificate-authority-data ${CA_DATA}
+    - kubectl config set-credentials gitlab --token="${SERVICE_TOKEN}"
+    - kubectl config set-context default --cluster=karis --user=gitlab
     - kubectl config use-context default
     - cat k8s/10-deploy.tpl | sed "s|__IMAGE_NAME__|$CI_REGISTRY_IMAGE:$CI_BUILD_REF|" > k8s/10-deploy.yml
-    - cat k8s/30-ingress.tpl | sed "s|__HOST_NAME__|${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.${KUBE_DOMAIN}|g" > k8s/30-ingress.yml
-    - kubectl apply -f k8s
+    - cat k8s/30-ingress.tpl | sed "s|__HOST_NAME__|$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.$KUBE_DOMAIN|g" > k8s/30-ingress.yml
+    - kubectl delete ns mmartin
+    - kubectl apply -f k8s/10-namespace.yml
+    - kubectl apply -f k8s/20-deploy.yml
+    - kubectl apply -f k8s/30-service.yml
+    - kubectl apply -f k8s/40-ingress.yml
+    - kubectl rollout status -f k8s/20-deployment.yml
+    - kubectl get all,ing -l ref=${CI_ENVIRONMENT_SLUG} -n mmartin
   only:
     - master
