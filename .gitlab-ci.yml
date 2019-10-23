@@ -5,18 +5,18 @@ stages:
   - deploy
   
 build:
-  image: docker:stable
+  image: docker:latest
   stage: package
   services:
     - docker:dind
   script:
-    - docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} 
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
     - docker build -t $CI_REGISTRY_IMAGE:tmp .
     - docker push $CI_REGISTRY_IMAGE:tmp
   only:
     - master
 test:
-  image: docker:stable
+  image: docker:latest
   stage: test
   services:
     - docker:dind
@@ -29,7 +29,7 @@ test:
     - master
 
 push:
-  image: docker:stable
+  image: docker:latest
   stage: push
   services:
     - docker:dind
