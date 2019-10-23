@@ -13,7 +13,6 @@ stages:
   - deploy
   
 build:
-  image: docker:latest
   stage: package
   services:
     - docker:dind
@@ -24,7 +23,6 @@ build:
   only:
     - master
 test:
-  image: docker:latest
   stage: test
   services:
     - docker:dind
@@ -32,16 +30,15 @@ test:
     - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
     - docker run -d --name hello $CI_REGISTRY_IMAGE:tmp
     - sleep 10s
-    - TEST=$(docker run --link hello lucj/curl -s http://hello:8000)
+    - TEST=$(docker run --link hello lucj/curl -s http://hello:8013)
     - $([ "${TEST:0:5}" = "Hello" ])
   only:
     - master
 
 push:
-  image: docker:18-git
   stage: push
   services:
-    - docker:18-dind
+    - docker:dind
   script:
    - docker image pull $CI_REGISTRY_IMAGE:tmp
    - docker image tag $CI_REGISTRY_IMAGE:tmp $CI_REGISTRY_IMAGE:$CI_BUILD_REF
