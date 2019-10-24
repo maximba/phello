@@ -49,16 +49,15 @@ push:
     - master
 
 build_deployer:
-  stage: build_deployer
+  stage: push
   services:
     - docker:dind
   script:
     - docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} 
-    - echo ${DEPLOYER_NAME}
-    - docker build -t ${DEPLOYER_NAME}:latest -f Dockerfile.deployer .
-    - docker tag ${DEPLOYER_NAME}:latest ${DEPLOYER_NAME}:${CI_COMMIT_SHORT_SHA}
-    - docker push ${DEPLOYER_NAME}:latest
-    - docker push ${DEPLOYER_NAME}:${CI_COMMIT_SHORT_SHA}
+    - docker build -t $CI_REGISTRY_IMAGE/kups:latest -f Dockerfile.deployer .
+    - docker tag $CI_REGISTRY_IMAGE/kups:latest ${DEPLOYER_NAME}:${CI_COMMIT_SHORT_SHA}
+    - docker push $CI_REGISTRY_IMAGE/kups:latest
+    - docker push $CI-REGISTRY_IMAGE/kups:${CI_COMMIT_SHORT_SHA}
 
 deploy:
   stage: deploy
@@ -74,7 +73,6 @@ deploy:
     - kubectl config use-context default
     - cat k8s/20-deploy.tpl | sed "s|__IMAGE_NAME__|$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA|" > k8s/20-deploy.yml
     - cat k8s/40-ingress.tpl | sed "s|__HOST_NAME__|$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.$KUBE_DOMAIN|g" > k8s/40-ingress.yml
-    - kubectl delete ns mmartin
     - kubectl apply -f k8s/10-namespace.yml
     - kubectl apply -f k8s/20-deploy.yml
     - kubectl apply -f k8s/30-service.yml
