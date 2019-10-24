@@ -67,7 +67,6 @@ deploy:
     name: stage
     url: https://${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.${KUBE_DOMAIN}/
   script:
-    - docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} 
     - kubectl config set-cluster k8s --server="${K8S_SERVER}"
     - kubectl config set clusters.k8s.certificate-authority-data ${CA_DATA}
     - kubectl config set-credentials gitlab --token="${SERVICE_TOKEN}"
