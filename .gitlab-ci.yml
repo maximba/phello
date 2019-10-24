@@ -23,7 +23,7 @@ build:
     - docker build -t $CI_REGISTRY_IMAGE:tmp .
     - docker push $CI_REGISTRY_IMAGE:tmp
   only:
-    - master
+    - flux
 test:
   stage: test
   services:
@@ -35,7 +35,7 @@ test:
     - TEST=$(docker run --link hello lucj/curl -s http://hello:8013)
     - $([ "${TEST:0:5}" = "Hello" ])
   only:
-    - master
+    - flux
 
 push:
   stage: push
@@ -50,4 +50,4 @@ push:
    - cat k8s/40-ingress.tpl | sed "s|__HOST_NAME__|$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.$KUBE_DOMAIN|g" > k8s/40-ingress.yml
    
   only:
-    - master
+    - flux
