@@ -10,6 +10,7 @@ stages:
   - package
   - test
   - push
+  - build_deployer
   - deploy
   
 build:
@@ -47,9 +48,21 @@ push:
   only:
     - master
 
+build_deployer:
+  stage: build_deployer
+  services:
+    - docker:dind
+  script:
+    - docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} 
+    - echo ${DEPLOYER_NAME}
+    - docker build -t ${DEPLOYER_NAME}:latest -f Dockerfile.deployer .
+    - docker tag ${DEPLOYER_NAME}:latest ${DEPLOYER_NAME}:${CI_COMMIT_SHORT_SHA}
+    - docker push ${DEPLOYER_NAME}:latest
+    - docker push ${DEPLOYER_NAME}:${CI_COMMIT_SHORT_SHA}
+
 deploy:
   stage: deploy
-  image: lucj/kubectl:1.15.2
+  image: ${DEPLOYER}:latest
   environment:
     name: stage
     url: https://${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.${KUBE_DOMAIN}/
