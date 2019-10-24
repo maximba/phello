@@ -55,9 +55,9 @@ build_deployer:
   script:
     - docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} 
     - docker build -t $CI_REGISTRY_IMAGE/kups:latest -f Dockerfile.deployer .
-    - docker tag $CI_REGISTRY_IMAGE/kups:latest ${DEPLOYER_NAME}:${CI_COMMIT_SHORT_SHA}
+    - docker tag $CI_REGISTRY_IMAGE/kups:latest $CI_REGISTRY_NAME/kups:$CI_COMMIT_SHORT_SHA
     - docker push $CI_REGISTRY_IMAGE/kups:latest
-    - docker push $CI-REGISTRY_IMAGE/kups:${CI_COMMIT_SHORT_SHA}
+    - docker push $CI-REGISTRY_IMAGE/kups:$CI_COMMIT_SHORT_SHA
 
 deploy:
   stage: deploy
