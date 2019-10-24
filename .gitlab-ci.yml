@@ -4,6 +4,7 @@ image: docker:latest
 variables:
   DOCKER_TLS_CERTDIR: ''
   KUBE_DOMAIN: gitlab.bxsoft.com
+  DOCKER_HOST: tcp://localhost:2375
 
 stages:
   - package
