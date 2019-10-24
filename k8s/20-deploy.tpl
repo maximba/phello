@@ -2,9 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: phello
-  namespace: mmartin
+  annotations:
+    flux.weave.works/automated: "true"
+    flux.weave.works/tag.phello: regexp:^((?!tmp).)*$
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: phello
@@ -14,5 +15,5 @@ spec:
         app: phello
     spec:
       containers:
-      - name: phello
+      - name: hello
         image: __IMAGE_NAME__
