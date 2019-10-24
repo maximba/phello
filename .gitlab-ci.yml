@@ -2,9 +2,8 @@
 image: docker:latest
 
 variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://localhost:2375
   DOCKER_TLS_CERTDIR: ''
+  KUBE_DOMAIN: gitlab.bxsoft.com
 
 stages:
   - package
@@ -52,7 +51,9 @@ push:
 deploy:
   stage: deploy
   image: lucj/kubectl:1.15.2
-  environment: test
+  environment:
+    name: stage
+    url: https://${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.${KUBE_DOMAIN}/
   script:
     - kubectl config set-cluster k8s --server="${K8S_SERVER}"
     - kubectl config set clusters.k8s.certificate-authority-data ${CA_DATA}
