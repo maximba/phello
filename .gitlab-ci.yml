@@ -74,8 +74,8 @@ deploy:
     - kubectl config use-context default
     - cat k8s/20-deploy.tpl | sed "s|__IMAGE_NAME__|$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA|" > k8s/20-deploy.yml
     - cat k8s/40-ingress.tpl | sed "s|__HOST_NAME__|$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.$KUBE_DOMAIN|g" > k8s/40-ingress.yml
-    - kubectl create secret docker-registry my-reg --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD --namespace=mmartin
-    - kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "my-reg"}]}' --namespace=mmartin
+    - kubectl create secret docker-registry my-reg --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD -n mmartin
+    - kubectl patch serviceaccount default -p '{"imagePullSecrets":[{"name":"my-reg"}]}' -n mmartin
     - kubectl apply -f k8s/10-namespace.yml
     - kubectl apply -f k8s/20-deploy.yml
     - kubectl apply -f k8s/30-service.yml
