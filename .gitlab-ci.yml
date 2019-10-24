@@ -42,10 +42,8 @@ push:
   script:
    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
    - docker image pull $CI_REGISTRY_IMAGE:tmp
-   - docker image tag $CI_REGISTRY_IMAGE:tmp $CI_REGISTRY_IMAGE:$CI_BUILD_REF
-   - docker image tag $CI_REGISTRY_IMAGE:tmp $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-   - docker push $CI_REGISTRY_IMAGE:$CI_BUILD_REF
-   - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+   - docker image tag $CI_REGISTRY_IMAGE:tmp $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+   - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   only:
     - master
 
@@ -61,7 +59,7 @@ deploy:
     - kubectl config set-credentials gitlab --token="${SERVICE_TOKEN}"
     - kubectl config set-context default --cluster=karis --user=gitlab
     - kubectl config use-context default
-    - cat k8s/20-deploy.tpl | sed "s|__IMAGE_NAME__|$CI_REGISTRY_IMAGE:$CI_BUILD_REF|" > k8s/20-deploy.yml
+    - cat k8s/20-deploy.tpl | sed "s|__IMAGE_NAME__|$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA|" > k8s/20-deploy.yml
     - cat k8s/40-ingress.tpl | sed "s|__HOST_NAME__|$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.$KUBE_DOMAIN|g" > k8s/40-ingress.yml
     - kubectl delete ns mmartin
     - kubectl apply -f k8s/10-namespace.yml
