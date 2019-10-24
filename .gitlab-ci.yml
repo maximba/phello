@@ -62,7 +62,7 @@ build_deployer:
 
 deploy:
   stage: deploy
-  image: ${DEPLOYER}:latest
+  image: ${DEPLOYER_NAME}:latest
   environment:
     name: stage
     url: https://${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.${KUBE_DOMAIN}/
