@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
       - name: phello
-        image: gitlab.bxsoft.com:4567:mmartin/phello:flux
+        image: gitlab.bxsoft.com:4567:mmartin/phello
