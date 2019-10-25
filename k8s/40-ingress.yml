@@ -9,10 +9,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - __HOST_NAME__
+    - phello-stage.gitlab.bxsoft.com
     secretName: tls-gitlab-bxsoft
   rules:
-  - host: __HOST_NAME__
+  - host: phello-stage.gitlab.bxsoft.com
     http:
       paths:
       - path: /

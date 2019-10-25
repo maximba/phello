@@ -46,8 +46,6 @@ push:
    - docker pull $CI_REGISTRY_IMAGE:tmp
    - docker tag $CI_REGISTRY_IMAGE:tmp $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-   - cat k8s/20-deploy.tpl | sed "s|__IMAGE_NAME__|$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA|" > k8s/20-deploy.yml
-   - cat k8s/40-ingress.tpl | sed "s|__HOST_NAME__|$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.$KUBE_DOMAIN|g" > k8s/40-ingress.yml
    
   only:
     - flux

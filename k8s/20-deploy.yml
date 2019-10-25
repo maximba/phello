@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
       - name: phello
-        image: __IMAGE_NAME__
+        image: gitlab.bxsoft.com:4567:mmartin/phello
