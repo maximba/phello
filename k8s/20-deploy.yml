@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: phello
+  namespace: mmartin
   annotations:
     flux.weave.works/automated: "true"
     flux.weave.works/tag.phello: regexp:^((?!tmp).)*$
