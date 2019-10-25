@@ -15,5 +15,5 @@ spec:
         app: phello
     spec:
       containers:
-      - name: hello
+      - name: phello
         image: __IMAGE_NAME__
