@@ -8,7 +8,7 @@ port = "8013"
 
 @app.route("/")
 def hello():
-  return "Hello GitLab using Flux!"
+  return "Hello GitLab, deployed by Flux!"
   
 if __name__ == "__main__":
   app.run(host=bind_addr, port=8013)
