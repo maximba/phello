@@ -5,14 +5,11 @@ variables:
   DOCKER_TLS_CERTDIR: ''
   KUBE_DOMAIN: gitlab.bxsoft.com
   DOCKER_HOST: tcp://localhost:2375
-  DEPLOYER_NAME: ${CI_REGISTRY_IMAGE}/kups
 
 stages:
   - package
   - test
   - push
-  - build_deployer
-  - deploy
   
 build:
   stage: package
