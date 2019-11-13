@@ -2,10 +2,8 @@ pipeline {
   agent none
   stages {
     stage('Package') {
-      agent {
-        kubernetes {
-          yamlFile "ci/kaniko.yaml"
-        } 
+      agent kubernetes {
+        yamlFile "ci/kaniko.yaml"
       }
       steps {
         container(name: 'kaniko', shell: '/busybox/sh') {
