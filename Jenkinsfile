@@ -15,8 +15,7 @@ pipeline {
   agent {
     kubernetes {
       defaultContainer 'kaniko'
-        yamlFile "ci/kaniko.yaml"
-      }
+      yamlFile "ci/kaniko.yaml"
     }
   }
   stages {
