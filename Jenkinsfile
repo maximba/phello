@@ -20,11 +20,11 @@ pipeline {
   }
   stages {
     stage('Build with Kaniko') {
-      steps {
-        git 'https://github.com/jenkinsci/docker-jnlp-slave.git'
-        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=gitlab.bxsoft.com:4567/mmartin/phello:tmp'
+      container(name: 'kaniko', shell: '/busybox.sh') {
+        sh '''
+	'/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=gitlab.bxsoft.com:4567/mmartin/phello:tmp'
+	'''
       }
     }
   }
 }
-
