@@ -12,18 +12,20 @@
  */
 
 pipeline {
-  agent {
-    kubernetes {
-      defaultContainer 'kaniko'
-      yamlFile "ci/kaniko.yaml"
-    }
-  }
   stages {
     stage('Build with Kaniko') {
-      container(name: 'kaniko', shell: '/busybox.sh') {
-        sh '''
-	'/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=gitlab.bxsoft.com:4567/mmartin/phello:tmp'
-	'''
+      agent {
+        kubernetes {
+          defaultContainer 'kaniko'
+          yamlFile "ci/kaniko.yaml"
+        }
+      }
+      steps {
+        container(name: 'kaniko', shell: '/busybox.sh') {
+          sh '''
+	  '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=gitlab.bxsoft.com:4567/mmartin/phello:tmp'
+  	  '''
+        } 
       }
     }
   }
