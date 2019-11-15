@@ -12,6 +12,7 @@
  */
 
 pipeline {
+  agent none
   stages {
     stage('Build with Kaniko') {
       agent {
