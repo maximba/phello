@@ -12,15 +12,15 @@
  */
 
 pipeline {
-  agent none
+  agent {
+    kubernetes {
+      defaultContainer 'kaniko'
+        yamlFile "ci/kaniko.yaml"
+      }
+    }
+  }
   stages {
     stage('Build with Kaniko') {
-      agent {
-        kubernetes {
-          defaultContainer 'kaniko'
-          yamlFile "ci/kaniko.yaml"
-        }
-      }
       steps {
         container(name: 'kaniko', shell: '/busybox.sh') {
           sh '''
