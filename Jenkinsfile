@@ -20,7 +20,7 @@ pipeline {
   }
 
   environment {
-    SHORT_COMMIT=${GIT_COMMIT[0..7]}
+    SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
   }
 
   stages {
