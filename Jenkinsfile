@@ -21,7 +21,7 @@ pipeline {
   stages {
     stage('Build with Kaniko') {
       steps {
-	echo ${GIT_COMMIT}
+	echo "${GIT_COMMIT}"
 	sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination gitlab.bxsoft.com:4567/mmartin/phello:tmp'
       }
     }
