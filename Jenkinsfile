@@ -34,6 +34,7 @@ pipeline {
       regexpFilterExpression:  '',
       printContributedVariables: true
       printPostContent: true
+    }
   }
 
   stages {
