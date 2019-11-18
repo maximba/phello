@@ -20,14 +20,15 @@ pipeline {
   }
 
   environment {
-    SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
+//    TAG = "${GIT_COMMIT[0..7]}"
+    TAG = "${GIT_BRANCH}"
   }
 
   stages {
     stage('Build with Kaniko') {
       steps {
 	echo "${SHORT_COMMIT}"
-	sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination gitlab.bxsoft.com:4567/mmartin/phello:"${SHORT_COMMIT}"'
+	sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination gitlab.bxsoft.com:4567/mmartin/phello:"${TAG}"'
       }
     }
   }
