@@ -18,6 +18,11 @@ pipeline {
       yamlFile "ci/kaniko.yaml"
     }
   }
+
+  environment {
+    SHORT_COMMIT=${GIT_COMMIT[0..7]}
+  }
+
   stages {
     stage('Build with Kaniko') {
       steps {
