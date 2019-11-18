@@ -30,7 +30,6 @@ pipeline {
   stages {
     stage('Build with Kaniko') {
       steps {
-        sh 'echo "Building with KANIKO !!!"'
 	sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination gitlab.bxsoft.com:4567/mmartin/phello:"${TAG}"'
       }
     }
