@@ -12,7 +12,7 @@
  */
 
 
-// http://jenkins.gitlab.bxsoft.com/git/notifyCommit?url=ssh://git@gitlab.bxsoft.com/mmartin/phello.git' --user 'jenkins-trigger:mysecrettoken123'
+// http://jenkins.gitlab.axesor.com/git/notifyCommit?url=ssh://git@gitlab.axesor.com/mmartin/phello.git' --user 'jenkins-trigger:mysecrettoken123'
 
 pipeline {
   agent {
@@ -30,7 +30,7 @@ pipeline {
   stages {
     stage('Build with Kaniko') {
       steps {
-	sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination gitlab.bxsoft.com:4567/mmartin/phello:"${TAG}"'
+	sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination gitlab.axesor.com:4567/mmartin/phello:"${TAG}"'
       }
     }
   }
